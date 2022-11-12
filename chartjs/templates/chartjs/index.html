@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+ <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chartjs</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <!-- Latest compiled JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <!-- jQuery library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <!-- chartjs library -->
+
+ </head>
+ <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+<hr>
+ <body class="container-fluid">
+    <center class="row">
+      <h1>implementation of <b>chartJS</b> using <b>django</b></h1>
+    </center>
+    <hr />
+    <div class="row justify-content-center">
+      <div class="col-md-9 my-3" >
+        <canvas id="myChartline"></canvas>
+      </div>
+
+    </div>
+    <hr>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    
+    <script>
+      var endpoint = '/api';
+    
+      $.ajax({
+        method: "GET",
+        url: endpoint,
+        success: function(data) {
+          console.log(data)
+          
+          label = data.label
+          console.log(label)
+          chartdata1 = data.rank1
+          chartdata2 = data.rank2
+          chartdata3 = data.rank3
+          chartdata4 = data.rank4
+          chartdata5 = data.rank5
+          drawLineGraph(data, 'myChartline');
+          console.log("drawing");
+        },
+        error: function(error_data) {
+          console.log(error_data);
+        }
+      })
+      
+
+      function drawLineGraph(data, id){
+        xValues = data.dates
+        ctx = document.getElementById("myChartline");
+
+        const linedata = {
+          labels:xValues,
+          datasets: [{
+            label:label[0],
+            backgroundColor:"red",
+            borderColor: "red",
+            data: chartdata1,
+          }, {
+            label:label[1],
+            backgroundColor:"blue",
+            borderColor: "blue",
+            data: chartdata2,
+          }, {
+            label: label[2],
+            backgroundColor:"green",
+            borderColor: "green",
+            data: chartdata3,
+          }, {
+            label: label[3],
+            backgroundColor:"yellow",
+            borderColor: "yellow",
+            data: chartdata4,
+          }, {
+            label: label[4],
+            backgroundColor:"orange",
+            borderColor: "orange",
+            data: chartdata5,
+          }]
+        }
+
+        const options = {
+          scales: {
+            xAxis: {
+              // reverse: 'True',
+            },
+            yAxis: {
+              reverse: 'True',
+              // suggestedMin: 0,
+              suggestedMax: 6,
+              ticks: {
+                stepSize: 1
+            }
+            }
+          }
+        }
+
+        const config = {
+          type: 'line',
+          data: linedata,
+          options: options,
+        }
+
+        var chart = new Chart(ctx, config);
+      }
+      
+    </script>
+    <footer class="">
+      <p class="text-center">&copy; Copyright Chart | 2022</p>
+    </footer>
+  </body>
+</html>
